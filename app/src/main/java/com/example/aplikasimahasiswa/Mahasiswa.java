@@ -6,6 +6,7 @@ public class Mahasiswa {
     private String nama;
     private String alamat;
     private String kelamin;
+    public Mahasiswa(){};
 
     public Mahasiswa(String nim, String nama, String alamat, String kelamin) {
         this.nim = nim;
