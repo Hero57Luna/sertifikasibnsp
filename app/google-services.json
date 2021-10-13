@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "39453381811",
+    "firebase_url": "https://bnsp-database-default-rtdb.firebaseio.com",
+    "project_id": "bnsp-database",
+    "storage_bucket": "bnsp-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39453381811:android:2d6fa0067ee969e08c8cc6",
+        "android_client_info": {
+          "package_name": "com.example.aplikasimahasiswa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39453381811-1psm7111se8slbpv8jld0j4uonpg569f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYM2zhPfruAWsJ3swDXw5SgbrTHjJkgfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39453381811-1psm7111se8slbpv8jld0j4uonpg569f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39453381811:android:b8d96539666b1e0e8c8cc6",
+        "android_client_info": {
+          "package_name": "com.example.sertifikasibnsp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39453381811-1psm7111se8slbpv8jld0j4uonpg569f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYM2zhPfruAWsJ3swDXw5SgbrTHjJkgfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39453381811-1psm7111se8slbpv8jld0j4uonpg569f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
