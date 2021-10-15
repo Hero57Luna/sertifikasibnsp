@@ -3,9 +3,15 @@ package com.example.aplikasimahasiswa;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,12 +41,14 @@ public class TambahMahasiswa extends AppCompatActivity {
     RadioGroup radioGroup;
     RadioButton radioButton;
     ProgressBar progressBar;
-    private Uri filePath;
-    private final int PICK_IMAGE_REQUEST = 71;
     ImageView preview_foto;
     Button kirim_foto;
     Button btn;
     DBHelper dbHelper;
+
+    private Uri filePath;
+    private final int PICK_IMAGE_REQUEST = 71;
+    private int STORAGE_PERMISSION_CODE = 1;
     private String imgUrl;
     private StorageReference storageReference;
 
@@ -85,7 +93,12 @@ public class TambahMahasiswa extends AppCompatActivity {
         pilih_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage();
+                if (ContextCompat.checkSelfPermission(TambahMahasiswa.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    chooseImage();
+                }
+                else {
+                    requestStoragePermission();
+                }
             }
         });
 
@@ -97,6 +110,41 @@ public class TambahMahasiswa extends AppCompatActivity {
                 uploadImage(filePath);
             }
         });
+    }
+
+    private void requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Ijinkan akses")
+                    .setMessage("Ijinkan akses ke media penyimpanan untuk menggunakan aplikasi")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(TambahMahasiswa.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                chooseImage();
+            }
+            else {
+                Toast.makeText(getBaseContext(), "Ijinkan akses", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void chooseImage() {
