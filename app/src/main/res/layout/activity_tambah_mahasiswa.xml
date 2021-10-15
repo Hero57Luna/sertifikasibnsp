@@ -110,11 +110,12 @@
             android:id="@+id/upload_foto"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="upload"/>
+            android:text="pilih"/>
 
         <Button
             android:id="@+id/kirim_foto"
             android:layout_width="100dp"
+            android:enabled="false"
             android:layout_height="wrap_content"
             android:text="Kirim"
             android:layout_marginLeft="10dp"/>
@@ -130,6 +131,7 @@
 
     <Button
         android:id="@+id/button_simpan"
+        android:enabled="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Simpan"

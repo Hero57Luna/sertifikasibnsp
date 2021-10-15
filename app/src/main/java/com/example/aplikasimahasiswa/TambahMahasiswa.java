@@ -38,6 +38,8 @@ public class TambahMahasiswa extends AppCompatActivity {
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
     ImageView preview_foto;
+    Button kirim_foto;
+    Button btn;
     DBHelper dbHelper;
     private String imgUrl;
     private StorageReference storageReference;
@@ -56,9 +58,9 @@ public class TambahMahasiswa extends AppCompatActivity {
         EditText edit_alamat = findViewById(R.id.input_alamat);
         radioGroup = findViewById(R.id.input_kelamin);
         Button pilih_foto = findViewById(R.id.upload_foto);
-        Button kirim_foto = findViewById(R.id.kirim_foto);
+        kirim_foto = findViewById(R.id.kirim_foto);
         preview_foto = findViewById(R.id.foto_preview);
-        Button btn = findViewById(R.id.button_simpan);
+        btn = findViewById(R.id.button_simpan);
 
         dbHelper = new DBHelper();
 
@@ -109,6 +111,7 @@ public class TambahMahasiswa extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
+            kirim_foto.setEnabled(true);
             preview_foto.setVisibility(View.VISIBLE);
             filePath = data.getData();
             try {
@@ -130,8 +133,6 @@ public class TambahMahasiswa extends AppCompatActivity {
                 public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                     double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
                     progressBar.setProgress((int) progress);
-//                    String progressString = ((int) progress) + "% done";
-//                    progressTextView.setText(progressString);
                 }
             });
 
@@ -151,6 +152,7 @@ public class TambahMahasiswa extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         imgUrl = downloadUri.toString();
                         Toast.makeText(getBaseContext(), "Terkirim", Toast.LENGTH_SHORT).show();
+                        btn.setEnabled(true);
                     }
                 }
             });
