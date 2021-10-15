@@ -3,48 +3,79 @@ package com.example.aplikasimahasiswa;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    SwipeRefreshLayout swipeRefreshLayout;
+    RecyclerView recyclerView;
+    RecyclerViewAdapter recyclerViewAdapter;
+    DBHelper dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.activity_main);
+        swipeRefreshLayout = findViewById(R.id.swipe);
+        recyclerView = findViewById(R.id.rv);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerViewAdapter = new RecyclerViewAdapter(this);
+        recyclerView.setAdapter(recyclerViewAdapter);
+        dbHelper = new DBHelper();
+        loadData();
+    }
 
-        EditText edit_nim = findViewById(R.id.input_nim);
-        EditText edit_nama = findViewById(R.id.input_nama);
-        EditText edit_alamat = findViewById(R.id.input_alamat);
-        EditText edit_kelamin = findViewById(R.id.input_kelamin);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("Tambah Data");
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        DBHelper dbHelper = new DBHelper();
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getTitle().equals("Tambah Data")) {
+            Intent intent = new Intent(MainActivity.this, TambahMahasiswa.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-        Button btn = findViewById(R.id.button_simpan);
-        Button btn_lihat = findViewById(R.id.button_lihat);
-        btn.setOnClickListener(new View.OnClickListener() {
+    private void loadData() {
+        dbHelper.get().addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                Mahasiswa mahasiswa = new Mahasiswa(edit_nim.getText().toString(), edit_nama.getText().toString(), edit_alamat.getText().toString(), edit_kelamin.getText().toString());
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Mahasiswa> mhs = new ArrayList<>();
 
-                dbHelper.InsertData(mahasiswa).addOnSuccessListener(suc -> {
-                    Toast.makeText(getBaseContext(), "Data berhasil dimasukkan!", Toast.LENGTH_SHORT).show();
-                }).addOnFailureListener(err -> {
-                    Toast.makeText(getBaseContext(), "Terjadi error: "+err.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Mahasiswa mahasiswa = data.getValue(Mahasiswa.class);
+                    mhs.add(mahasiswa);
+                }
+
+                recyclerViewAdapter.setItems(mhs);
+                recyclerViewAdapter.notifyDataSetChanged();
             }
-        });
 
-        btn_lihat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RecyclerViewActivity.class);
-                startActivity(intent);
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

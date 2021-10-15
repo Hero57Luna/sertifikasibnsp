@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AplikasiMahasiswa">
         <activity
-            android:name=".RecyclerViewActivity"
+            android:name=".TambahMahasiswa"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

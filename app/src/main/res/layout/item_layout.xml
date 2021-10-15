@@ -26,24 +26,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="nim"
+                android:textColor="@color/black"
                 android:id="@+id/txt_nim"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="nama"
+                android:textColor="@color/black"
                 android:id="@+id/txt_nama"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="alamat"
+                android:textColor="@color/black"
                 android:id="@+id/txt_alamat"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="kelamin"
+                android:textColor="@color/black"
                 android:id="@+id/txt_kelamin"/>
 
         </LinearLayout>

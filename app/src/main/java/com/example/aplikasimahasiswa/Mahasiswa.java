@@ -46,4 +46,5 @@ public class Mahasiswa {
     public void setKelamin(String kelamin) {
         this.kelamin = kelamin;
     }
+
 }
