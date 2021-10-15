@@ -6,13 +6,15 @@ public class Mahasiswa {
     private String nama;
     private String alamat;
     private String kelamin;
+    private String imageUrl;
     public Mahasiswa(){};
 
-    public Mahasiswa(String nim, String nama, String alamat, String kelamin) {
+    public Mahasiswa(String nim, String nama, String alamat, String kelamin, String imageUrl) {
         this.nim = nim;
         this.nama = nama;
         this.alamat = alamat;
         this.kelamin = kelamin;
+        this.imageUrl = imageUrl;
     }
 
     public String getNim() {
@@ -47,4 +49,11 @@ public class Mahasiswa {
         this.kelamin = kelamin;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

@@ -26,6 +26,7 @@ public class TambahMahasiswa extends AppCompatActivity {
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
     ImageView preview_foto;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +38,21 @@ public class TambahMahasiswa extends AppCompatActivity {
         EditText edit_alamat = findViewById(R.id.input_alamat);
         radioGroup = findViewById(R.id.input_kelamin);
         Button pilih_foto = findViewById(R.id.upload_foto);
+        Button kirim_foto = findViewById(R.id.kirim_foto);
         preview_foto = findViewById(R.id.foto_preview);
-
-
-        DBHelper dbHelper = new DBHelper();
-
         Button btn = findViewById(R.id.button_simpan);
+
+        dbHelper = new DBHelper();
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String imageURL = dbHelper.getDownloadUrl();
                 int selectedId = radioGroup.getCheckedRadioButtonId();
 
                 radioButton = (RadioButton) findViewById(selectedId);
 
-                Mahasiswa mahasiswa = new Mahasiswa(edit_nim.getText().toString(), edit_nama.getText().toString(), edit_alamat.getText().toString(), radioButton.getText().toString());
-                dbHelper.uploadImage(filePath);
+                Mahasiswa mahasiswa = new Mahasiswa(edit_nim.getText().toString(), edit_nama.getText().toString(), edit_alamat.getText().toString(), radioButton.getText().toString(), imageURL);
 
                 dbHelper.InsertData(mahasiswa).addOnSuccessListener(suc -> {
                     Toast.makeText(getBaseContext(), "Data berhasil dimasukkan!", Toast.LENGTH_SHORT).show();
@@ -66,6 +66,13 @@ public class TambahMahasiswa extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chooseImage();
+            }
+        });
+
+        kirim_foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.uploadImage(filePath);
             }
         });
 

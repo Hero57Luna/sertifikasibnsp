@@ -7,6 +7,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -23,7 +25,7 @@ public class DBHelper extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
-    private Uri downloadUrl;
+    public String downloadUrl;
 
 
     public DBHelper() {
@@ -45,19 +47,45 @@ public class DBHelper extends AppCompatActivity {
         if(filePath != null)
         {
             StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
-            UploadTask uploadTask = ref.putFile(filePath);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
+            UploadTask uploadTask;
+            uploadTask = ref.putFile(filePath);
+
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    return ref.getDownloadUrl();
                 }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-                    System.out.println(downloadUrl);
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        downloadUrl = downloadUri.toString();
+                        System.out.println("Download URL : " + downloadUrl);
+                    }
                 }
             });
+
+//            uploadTask.addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();
+//                }
+//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    //downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+//                    System.out.println(downloadUrl);
+//                }
+//            });
         }
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
     }
 }
