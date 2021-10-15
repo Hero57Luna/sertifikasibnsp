@@ -1,6 +1,7 @@
 package com.example.aplikasimahasiswa;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,26 +14,43 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.IOException;
+import java.util.UUID;
 
 public class TambahMahasiswa extends AppCompatActivity {
 
     RadioGroup radioGroup;
     RadioButton radioButton;
+    ProgressBar progressBar;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
     ImageView preview_foto;
     DBHelper dbHelper;
+    private String imgUrl;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_mahasiswa);
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        progressBar = findViewById(R.id.progressBar);
         EditText edit_nim = findViewById(R.id.input_nim);
         EditText edit_nama = findViewById(R.id.input_nama);
         EditText edit_alamat = findViewById(R.id.input_alamat);
@@ -52,7 +70,7 @@ public class TambahMahasiswa extends AppCompatActivity {
 
                 radioButton = (RadioButton) findViewById(selectedId);
 
-                Mahasiswa mahasiswa = new Mahasiswa(edit_nim.getText().toString(), edit_nama.getText().toString(), edit_alamat.getText().toString(), radioButton.getText().toString(), imageURL);
+                Mahasiswa mahasiswa = new Mahasiswa(edit_nim.getText().toString(), edit_nama.getText().toString(), edit_alamat.getText().toString(), radioButton.getText().toString(), imgUrl);
 
                 dbHelper.InsertData(mahasiswa).addOnSuccessListener(suc -> {
                     Toast.makeText(getBaseContext(), "Data berhasil dimasukkan!", Toast.LENGTH_SHORT).show();
@@ -72,10 +90,11 @@ public class TambahMahasiswa extends AppCompatActivity {
         kirim_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHelper.uploadImage(filePath);
+                Toast.makeText(getBaseContext(), "Mengirim...", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.VISIBLE);
+                uploadImage(filePath);
             }
         });
-
     }
 
     private void chooseImage() {
@@ -98,6 +117,43 @@ public class TambahMahasiswa extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void uploadImage(Uri filePath) {
+        if(filePath != null)
+        {
+            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            UploadTask uploadTask;
+            uploadTask = (UploadTask) ref.putFile(filePath).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    progressBar.setProgress((int) progress);
+//                    String progressString = ((int) progress) + "% done";
+//                    progressTextView.setText(progressString);
+                }
+            });
+
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        imgUrl = downloadUri.toString();
+                        Toast.makeText(getBaseContext(), "Terkirim", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 }
