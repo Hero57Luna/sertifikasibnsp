@@ -45,8 +45,6 @@ public class DBHelper {
         return databaseReference.orderByKey();
     }
 
-
-
     public String getDownloadUrl() {
         return downloadUrl;
     }

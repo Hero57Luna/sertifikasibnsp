@@ -65,7 +65,7 @@ public class TambahMahasiswa extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imageURL = dbHelper.getDownloadUrl();
+                //String imageURL = dbHelper.getDownloadUrl();
                 int selectedId = radioGroup.getCheckedRadioButtonId();
 
                 radioButton = (RadioButton) findViewById(selectedId);
@@ -155,5 +155,12 @@ public class TambahMahasiswa extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(TambahMahasiswa.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

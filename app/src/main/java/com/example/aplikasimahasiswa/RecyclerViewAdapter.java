@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -38,6 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mahasiswaViewHolder.txt_nama.setText(mhs.getNama());
         mahasiswaViewHolder.txt_alamat.setText(mhs.getAlamat());
         mahasiswaViewHolder.txt_kelamin.setText(mhs.getKelamin());
+        Glide.with(mahasiswaViewHolder.image.getContext()).load(mhs.getImageUrl()).into(mahasiswaViewHolder.image);
     }
 
     @Override

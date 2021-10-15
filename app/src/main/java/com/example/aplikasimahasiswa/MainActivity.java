@@ -41,6 +41,34 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerViewAdapter);
         dbHelper = new DBHelper();
         loadData();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recyclerViewAdapter.list.clear();
+                recyclerViewAdapter.notifyDataSetChanged();
+                dbHelper.get().addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<Mahasiswa> mhs = new ArrayList<>();
+
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            Mahasiswa mahasiswa = data.getValue(Mahasiswa.class);
+                            mhs.add(mahasiswa);
+                        }
+                        recyclerViewAdapter.setItems(mhs);
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
     }
 
     @Override
@@ -59,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadData() {
+        swipeRefreshLayout.setRefreshing(true);
         dbHelper.get().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -68,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
                     Mahasiswa mahasiswa = data.getValue(Mahasiswa.class);
                     mhs.add(mahasiswa);
                 }
-
                 recyclerViewAdapter.setItems(mhs);
                 recyclerViewAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
