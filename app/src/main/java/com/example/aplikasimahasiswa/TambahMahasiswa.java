@@ -209,8 +209,6 @@ public class TambahMahasiswa extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(TambahMahasiswa.this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 }

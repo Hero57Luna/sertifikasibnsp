@@ -18,132 +18,142 @@
         android:textColor="@color/black"
         />
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="NIM"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NIM"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                />
 
-    <EditText
-        android:id="@+id/input_nim"
-        android:inputType="number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="textStart"
-        />
+            <EditText
+                android:id="@+id/input_nim"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nama"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nama"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                />
 
-    <EditText
-        android:id="@+id/input_nama"
-        android:inputType="textCapWords"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:textAlignment="textStart" />
+            <EditText
+                android:id="@+id/input_nama"
+                android:inputType="textCapWords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:textAlignment="textStart" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Alamat"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Alamat"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                />
 
-    <EditText
-        android:id="@+id/input_alamat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="textStart"
-        />
+            <EditText
+                android:id="@+id/input_alamat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Jenis Kelamin"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jenis Kelamin"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                />
 
-    <RadioGroup
-        android:id="@+id/input_kelamin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <RadioGroup
+                android:id="@+id/input_kelamin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radio_laki"
-            android:text="Laki - laki" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radio_laki"
+                    android:text="Laki - laki" />
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radio_perempuan"
-            android:layout_marginLeft="10dp"
-            android:text="Perempuan" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radio_perempuan"
+                    android:layout_marginLeft="10dp"
+                    android:text="Perempuan" />
 
-    </RadioGroup>
+            </RadioGroup>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Foto"
-        android:textSize="20dp"
-        android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Foto"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/upload_foto"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="pilih"/>
+                <Button
+                    android:id="@+id/upload_foto"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="pilih"/>
 
-        <Button
-            android:id="@+id/kirim_foto"
-            android:layout_width="100dp"
-            android:enabled="false"
-            android:layout_height="wrap_content"
-            android:text="Kirim"
-            android:layout_marginLeft="10dp"/>
+                <Button
+                    android:id="@+id/kirim_foto"
+                    android:layout_width="100dp"
+                    android:enabled="false"
+                    android:layout_height="wrap_content"
+                    android:text="Kirim"
+                    android:layout_marginLeft="10dp"/>
 
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <ImageView
-        android:id="@+id/foto_preview"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/foto_preview"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/button_simpan"
-        android:enabled="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Simpan"
-        />
+            <Button
+                android:id="@+id/button_simpan"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Simpan"
+                />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_marginTop="20dp"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:progress="0"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_marginTop="20dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:progress="0"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
